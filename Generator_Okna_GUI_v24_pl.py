@@ -5,21 +5,31 @@ import customtkinter as ctk
 import webbrowser
 from PIL import Image
 
-ctk.set_appearance_mode("System")
+ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
+
+# --- Spójna paleta GUI ---
+ACCENT        = "#3b82f6"   # niebieski akcent
+ACCENT_HOVER  = "#2563eb"
+BG_MAIN       = "#1a1a1a"   # tło okna głównego
+BG_CARD       = "#212121"   # karty sekcji
+BORDER_CARD   = "#333333"
+TEXT_MUTED    = "#9ca3af"
+SUCCESS       = "#22c55e"
+SUCCESS_HOVER = "#16a34a"
 
 class AboutDialog(ctk.CTkToplevel):
     def __init__(self, parent, logo_path, logo_size):
         super().__init__(parent)
         self.title("O programie - Generator")
-        self.geometry("550x450")
+        self.geometry("460x420")
         self.resizable(False, False)
-        self.configure(fg_color="#1a1a1a")
-        
+        self.configure(fg_color=BG_MAIN)
+
         self.update_idletasks()
-        x = parent.winfo_x() + (parent.winfo_width() // 2) - (450 // 2)
-        y = parent.winfo_y() + (parent.winfo_height() // 2) - (450 // 2)
-        self.geometry(f"450x450+{x}+{y}")
+        x = parent.winfo_x() + (parent.winfo_width() // 2) - (460 // 2)
+        y = parent.winfo_y() + (parent.winfo_height() // 2) - (420 // 2)
+        self.geometry(f"460x420+{x}+{y}")
         
         self.grab_set()
 
@@ -28,21 +38,20 @@ class AboutDialog(ctk.CTkToplevel):
                 img = Image.open(logo_path)
                 img.thumbnail((logo_size, logo_size))
                 ctk_img = ctk.CTkImage(light_image=img, dark_image=img, size=img.size)
-                ctk.CTkLabel(self, image=ctk_img, text="").pack(pady=(25, 10))
+                ctk.CTkLabel(self, image=ctk_img, text="").pack(pady=(18, 8))
             except:
                 self.show_default_icon()
         else:
             self.show_default_icon()
 
-        ctk.CTkLabel(self, text="Generator Okna About", font=("Arial", 20, "bold"), text_color="#ffffff").pack(pady=(5, 2))
-        ctk.CTkLabel(self, text="Wersja v24.0.0", font=("Arial", 12), text_color="#808080").pack(pady=(0, 15))
+        ctk.CTkLabel(self, text="Generator Okna GUI", font=("Arial", 18, "bold"), text_color="#ffffff").pack(pady=(4, 0))
+        ctk.CTkLabel(self, text="Wersja v24.0.0", font=("Arial", 11), text_color="#808080").pack(pady=(0, 10))
 
         desc_text = "Zaawansowane narzędzie do wizualnego projektowania, testowania w czasie rzeczywistym oraz generowania czystych, nowoczesnych okien informacyjnych dla biblioteki CustomTkinter."
-        ctk.CTkLabel(self, text=desc_text, font=("Arial", 13), text_color="#e0e0e0", wraplength=390, justify="center").pack(pady=10, padx=20)
+        ctk.CTkLabel(self, text=desc_text, font=("Arial", 12), text_color="#e0e0e0", wraplength=380, justify="center").pack(pady=8, padx=20)
 
-        info_frame = ctk.CTkFrame(self, fg_color="#242424", corner_radius=8, width=390, height=100)
-        info_frame.pack(pady=15, padx=20, fill="x")
-        info_frame.pack_propagate(False)
+        info_frame = ctk.CTkFrame(self, fg_color=BG_CARD, corner_radius=10, border_width=1, border_color=BORDER_CARD, width=380, height=92)
+        info_frame.pack(pady=10, padx=20, fill="x")
 
         ctk.CTkLabel(info_frame, text="Autor: Sebastian Januchowski", font=("Arial", 12, "bold"), text_color="#ffffff").pack(pady=(8, 2))
         ctk.CTkLabel(info_frame, text="Firma: polsoft.ITS™ Group", font=("Arial", 11), text_color="#aaaaaa").pack(pady=1)
@@ -58,19 +67,21 @@ class AboutDialog(ctk.CTkToplevel):
         email_lbl.pack(side="left", padx=10)
         email_lbl.bind("<Button-1>", lambda e: webbrowser.open("mailto:polsoft.its@mail.com"))
 
-        ctk.CTkButton(self, text="Zamknij", fg_color="#3a3a3a", text_color="#ffffff", hover_color="#4a4a4a", width=120, command=self.destroy).pack(pady=(10, 20), side="bottom")
+        ctk.CTkButton(self, text="Zamknij", fg_color=ACCENT, text_color="#ffffff", hover_color=ACCENT_HOVER, corner_radius=8, height=30, width=110, font=("Arial", 12), command=self.destroy).pack(pady=(10, 16), side="bottom")
 
     def show_default_icon(self):
-        ctk.CTkLabel(self, text="ℹ", font=("Arial", 48), text_color="#3498db").pack(pady=(25, 10))
+        ctk.CTkLabel(self, text="ℹ", font=("Arial", 40), text_color="#3498db").pack(pady=(18, 8))
 
 
 class AboutGeneratorApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("Generator Okna About v24 - Dynamic Links Edition")
+        self.title("Generator Okna GUI v24 - Dynamic Links Edition")
         self.geometry("950x820")
+        self.minsize(860, 700)
         self.resizable(True, True)
+        self.configure(fg_color=BG_MAIN)
 
         # Zmienne danych tekstowych generatora
         self.logo_path = ""
@@ -256,10 +267,12 @@ class AboutGeneratorApp(ctk.CTk):
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
-        self.edit_frame = ctk.CTkScrollableFrame(self, width=420, corner_radius=0)
+        self.edit_frame = ctk.CTkScrollableFrame(self, width=400, corner_radius=0, fg_color=BG_MAIN)
         self.edit_frame.grid(row=0, column=0, sticky="nsew")
 
-        ctk.CTkLabel(self.edit_frame, text="Konfiguracja Okna", font=("Arial", 20, "bold")).pack(pady=15)
+        ctk.CTkLabel(self.edit_frame, text="⚙  Konfiguracja Okna", font=("Arial", 17, "bold"), text_color="#ffffff").pack(pady=(14, 3))
+        ctk.CTkLabel(self.edit_frame, text="Wypełnij pola — podgląd zaktualizuje się automatycznie.",
+                     font=("Arial", 10), text_color=TEXT_MUTED).pack(padx=20, pady=(0, 10))
 
         self.create_input(self.edit_frame, "Nazwa aplikacji:", self.app_name, "app_name")
         self.create_input(self.edit_frame, "Wersja:", self.version, "version")
@@ -271,70 +284,75 @@ class AboutGeneratorApp(ctk.CTk):
         self.render_links_inputs()
 
         # --- SEKCJA REGULACJI STYLU ---
-        self.style_frame = ctk.CTkFrame(self.edit_frame, fg_color="#2b2b2b", corner_radius=8)
+        self.style_frame = ctk.CTkFrame(self.edit_frame, fg_color=BG_CARD, corner_radius=10, border_width=1, border_color=BORDER_CARD)
         self.style_frame.pack(fill="x", padx=20, pady=15)
-        
-        self.slider_label = ctk.CTkLabel(self.style_frame, text="Styl pola [Tytuł]: 22px", font=("Arial", 12, "bold"))
-        self.slider_label.pack(anchor="w", padx=15, pady=(10, 2))
+
+        ctk.CTkLabel(self.style_frame, text="🎨 Styl i kolory", font=("Arial", 12, "bold"), text_color="#ffffff").pack(anchor="w", padx=15, pady=(10, 2))
+        self.slider_label = ctk.CTkLabel(self.style_frame, text="Styl pola [Tytuł]: 22px", font=("Arial", 10), text_color=TEXT_MUTED)
+        self.slider_label.pack(anchor="w", padx=15, pady=(0, 2))
         
         controls_container = ctk.CTkFrame(self.style_frame, fg_color="transparent")
-        controls_container.pack(fill="x", padx=15, pady=(0, 15))
+        controls_container.pack(fill="x", padx=15, pady=(0, 10))
         
-        self.font_slider = ctk.CTkSlider(controls_container, from_=8, to=40, number_of_steps=32, command=self.on_slider_move)
+        self.font_slider = ctk.CTkSlider(controls_container, from_=8, to=40, number_of_steps=32, width=160, button_color=ACCENT, button_hover_color=ACCENT_HOVER, progress_color=ACCENT, command=self.on_slider_move)
         self.font_slider.set(self.font_sizes[self.active_field])
-        self.font_slider.pack(fill="x", pady=(0, 10))
+        self.font_slider.pack(fill="x", pady=(0, 8))
 
-        self.logo_slider_label = ctk.CTkLabel(controls_container, text=f"Maksymalny rozmiar logo: {self.logo_size}px", font=("Arial", 11))
-        self.logo_slider_label.pack(anchor="w", pady=(5, 2))
+        self.logo_slider_label = ctk.CTkLabel(controls_container, text=f"Maksymalny rozmiar logo: {self.logo_size}px", font=("Arial", 10), text_color=TEXT_MUTED)
+        self.logo_slider_label.pack(anchor="w", pady=(4, 2))
         
-        self.logo_slider = ctk.CTkSlider(controls_container, from_=30, to=200, number_of_steps=170, command=self.on_logo_slider_move)
+        self.logo_slider = ctk.CTkSlider(controls_container, from_=30, to=200, number_of_steps=170, width=160, button_color=ACCENT, button_hover_color=ACCENT_HOVER, progress_color=ACCENT, command=self.on_logo_slider_move)
         self.logo_slider.set(self.logo_size)
-        self.logo_slider.pack(fill="x", pady=(0, 15))
+        self.logo_slider.pack(fill="x", pady=(0, 12))
         
         buttons_row = ctk.CTkFrame(controls_container, fg_color="transparent")
         buttons_row.pack(fill="x", pady=(5, 0))
         buttons_row.grid_columnconfigure((0, 1, 2), weight=1)
         
-        self.btn_bg_color = ctk.CTkButton(buttons_row, text="Tło", fg_color=self.bg_color, hover_color="#2c3e50", command=self.open_bg_color_picker)
-        self.btn_bg_color.grid(row=0, column=0, sticky="ew", padx=(0, 2))
+        self.btn_bg_color = ctk.CTkButton(buttons_row, text="Tło", height=26, font=("Arial", 11), corner_radius=8, fg_color=self.bg_color, border_width=1, border_color=BORDER_CARD, hover_color="#2c3e50", command=self.open_bg_color_picker)
+        self.btn_bg_color.grid(row=0, column=0, sticky="ew", padx=(0, 4))
 
-        self.btn_close_bg_picker = ctk.CTkButton(buttons_row, text="Przycisk", fg_color=self.btn_close_bg, hover_color="#2c3e50", command=self.open_close_bg_picker)
-        self.btn_close_bg_picker.grid(row=0, column=1, sticky="ew", padx=(2, 2))
+        self.btn_close_bg_picker = ctk.CTkButton(buttons_row, text="Przycisk", height=26, font=("Arial", 11), corner_radius=8, fg_color=self.btn_close_bg, border_width=1, border_color=BORDER_CARD, hover_color="#2c3e50", command=self.open_close_bg_picker)
+        self.btn_close_bg_picker.grid(row=0, column=1, sticky="ew", padx=4)
 
-        self.btn_close_fg_picker = ctk.CTkButton(buttons_row, text="Zamknij", fg_color="#34495e", text_color=self.btn_close_fg, hover_color="#2c3e50", command=self.open_close_fg_picker)
-        self.btn_close_fg_picker.grid(row=0, column=2, sticky="ew", padx=(2, 0))
+        self.btn_close_fg_picker = ctk.CTkButton(buttons_row, text="Zamknij", height=26, font=("Arial", 11), corner_radius=8, fg_color="#34495e", text_color=self.btn_close_fg, hover_color="#2c3e50", command=self.open_close_fg_picker)
+        self.btn_close_fg_picker.grid(row=0, column=2, sticky="ew", padx=4)
 
         # --- SEKCJA WYMIARÓW ---
-        ctk.CTkLabel(self.edit_frame, text="Wymiary okna About (rozciągaj myszką po prawej):", font=("Arial", 12, "bold")).pack(pady=(10, 5))
+        dim_card = ctk.CTkFrame(self.edit_frame, fg_color=BG_CARD, corner_radius=10, border_width=1, border_color=BORDER_CARD)
+        dim_card.pack(fill="x", padx=20, pady=(5, 15))
+
+        ctk.CTkLabel(dim_card, text="📐 Wymiary okna About", font=("Arial", 12, "bold"), text_color="#ffffff").pack(anchor="w", padx=15, pady=(10, 2))
+        ctk.CTkLabel(dim_card, text="Możesz też rozciągać podgląd myszką za prawą krawędź.", font=("Arial", 10), text_color=TEXT_MUTED).pack(anchor="w", padx=15, pady=(0, 6))
         
-        dim_frame = ctk.CTkFrame(self.edit_frame, fg_color="transparent")
-        dim_frame.pack(fill="x", padx=20)
+        dim_frame = ctk.CTkFrame(dim_card, fg_color="transparent")
+        dim_frame.pack(fill="x", padx=15, pady=(0, 10))
         dim_frame.grid_columnconfigure((0, 1, 2, 3), weight=1)
         
-        ctk.CTkLabel(dim_frame, text="Szerokość:").grid(row=0, column=0, sticky="e", padx=(0, 5))
-        self.entry_w = ctk.CTkEntry(dim_frame, textvariable=self.win_width, width=70)
-        self.entry_w.grid(row=0, column=1, sticky="w", pady=5)
+        ctk.CTkLabel(dim_frame, text="Szerokość:", font=("Arial", 11)).grid(row=0, column=0, sticky="e", padx=(0, 5))
+        self.entry_w = ctk.CTkEntry(dim_frame, textvariable=self.win_width, width=64, height=26, font=("Arial", 11), corner_radius=8)
+        self.entry_w.grid(row=0, column=1, sticky="w", pady=4)
         
-        ctk.CTkLabel(dim_frame, text="Wysokość:").grid(row=0, column=2, sticky="e", padx=(15, 5))
-        self.entry_h = ctk.CTkEntry(dim_frame, textvariable=self.win_height, width=70)
-        self.entry_h.grid(row=0, column=3, sticky="w", pady=5)
+        ctk.CTkLabel(dim_frame, text="Wysokość:", font=("Arial", 11)).grid(row=0, column=2, sticky="e", padx=(15, 5))
+        self.entry_h = ctk.CTkEntry(dim_frame, textvariable=self.win_height, width=64, height=26, font=("Arial", 11), corner_radius=8)
+        self.entry_h.grid(row=0, column=3, sticky="w", pady=4)
 
-        self.btn_logo = ctk.CTkButton(self.edit_frame, text="Wybierz Logo", command=self.load_logo, fg_color="#34495e")
-        self.btn_logo.pack(pady=15, padx=20, fill="x")
+        self.btn_logo = ctk.CTkButton(self.edit_frame, text="🖼  Wybierz Logo", command=self.load_logo, height=30, font=("Arial", 11), corner_radius=8, fg_color="#374151", hover_color="#4b5563")
+        self.btn_logo.pack(pady=8, padx=20, fill="x")
 
-        ctk.CTkButton(self.edit_frame, text="Generuj plik about.py", fg_color="#2ecc71", hover_color="#27ae60", 
-                      command=self.generate_file).pack(pady=10, padx=20, fill="x")
+        ctk.CTkButton(self.edit_frame, text="✨  Generuj plik about.py", fg_color=SUCCESS, hover_color=SUCCESS_HOVER, height=32, corner_radius=8, font=("Arial", 12, "bold"), 
+                      command=self.generate_file).pack(pady=(4, 16), padx=20, fill="x")
 
         # --- PRAWY PANEL: PODGLĄD ---
-        self.preview_container = ctk.CTkFrame(self, fg_color="#1a1a1a")
+        self.preview_container = ctk.CTkFrame(self, fg_color="#e8e8e8", corner_radius=12)
         self.preview_container.grid(row=0, column=1, padx=20, pady=20, sticky="nsew")
         
         self.update_preview()
 
     def create_input(self, master, label_text, var, field_key):
-        ctk.CTkLabel(master, text=label_text).pack(anchor="w", padx=20, pady=(5, 0))
-        entry = ctk.CTkEntry(master, textvariable=var, width=360)
-        entry.pack(padx=20, pady=(0, 5))
+        ctk.CTkLabel(master, text=label_text, font=("Arial", 10), text_color=TEXT_MUTED).pack(anchor="w", padx=20, pady=(6, 0))
+        entry = ctk.CTkEntry(master, textvariable=var, width=360, height=28, corner_radius=8, font=("Arial", 11), border_width=1, border_color=BORDER_CARD, fg_color=BG_CARD)
+        entry.pack(padx=20, pady=(2, 3), fill="x")
         entry.bind("<FocusIn>", lambda e: self.switch_active_field(field_key))
 
     def render_links_inputs(self):
@@ -343,53 +361,53 @@ class AboutGeneratorApp(ctk.CTk):
             widget.destroy()
 
         for idx, link_item in enumerate(self.links):
-            row_frame = ctk.CTkFrame(self.links_container, fg_color="transparent")
-            row_frame.pack(fill="x", padx=20, pady=3)
+            row_frame = ctk.CTkFrame(self.links_container, fg_color=BG_CARD, corner_radius=10, border_width=1, border_color=BORDER_CARD)
+            row_frame.pack(fill="x", padx=20, pady=4)
 
-            label_text = f"Link (WWW) #{idx + 1}:"
-            ctk.CTkLabel(row_frame, text=label_text).pack(anchor="w")
+            label_text = f"🔗 Link (WWW) #{idx + 1}"
+            ctk.CTkLabel(row_frame, text=label_text, font=("Arial", 10, "bold"), text_color=TEXT_MUTED).pack(anchor="w", padx=10, pady=(5, 0))
 
             input_action_row = ctk.CTkFrame(row_frame, fg_color="transparent")
-            input_action_row.pack(fill="x")
+            input_action_row.pack(fill="x", padx=10, pady=(2, 6))
 
-            entry = ctk.CTkEntry(input_action_row, textvariable=link_item["var"], width=230)
+            entry = ctk.CTkEntry(input_action_row, textvariable=link_item["var"], width=230, height=26, corner_radius=8, font=("Arial", 10), border_width=1, border_color=BORDER_CARD, fg_color=BG_MAIN)
             entry.pack(side="left", fill="x", expand=True, padx=(0, 5))
             entry.bind("<FocusIn>", lambda e, i=idx: self.switch_active_field("website", i))
 
             # Żółty przycisk "№" wstawiony przed przyciskiem "+"
-            btn_alias = ctk.CTkButton(input_action_row, text="№", width=30, height=28, fg_color="#f1c40f", hover_color="#f39c12", text_color="#000000", font=("Arial", 12, "bold"), command=lambda i=idx: self.open_alias_dialog(i))
+            btn_alias = ctk.CTkButton(input_action_row, text="№", width=26, height=26, corner_radius=6, font=("Arial", 10, "bold"), fg_color="#f1c40f", hover_color="#f39c12", text_color="#000000", command=lambda i=idx: self.open_alias_dialog(i))
             btn_alias.pack(side="left", padx=2)
 
-            btn_add = ctk.CTkButton(input_action_row, text="+", width=30, height=28, fg_color="#2ecc71", hover_color="#27ae60", command=self.add_link_field)
+            btn_add = ctk.CTkButton(input_action_row, text="+", width=26, height=26, corner_radius=6, font=("Arial", 11, "bold"), fg_color="#2ecc71", hover_color="#27ae60", command=self.add_link_field)
             btn_add.pack(side="left", padx=2)
 
-            btn_remove = ctk.CTkButton(input_action_row, text="-", width=30, height=28, fg_color="#e74c3c", hover_color="#c0392b", command=lambda i=idx: self.remove_link_field(i))
+            btn_remove = ctk.CTkButton(input_action_row, text="-", width=26, height=26, corner_radius=6, font=("Arial", 11, "bold"), fg_color="#e74c3c", hover_color="#c0392b", command=lambda i=idx: self.remove_link_field(i))
             btn_remove.pack(side="left", padx=2)
 
     def open_alias_dialog(self, index):
         """Otwiera małe okienko modalne do wpisania ładnej etykiety zamiast pełnego URL."""
         dialog = ctk.CTkToplevel(self)
         dialog.title("Ustaw etykietę linku")
-        dialog.geometry("350x150")
+        dialog.geometry("350x130")
         dialog.resizable(False, False)
         dialog.grab_set()
         
         dialog.update_idletasks()
         x = self.winfo_x() + (self.winfo_width() // 2) - (350 // 2)
-        y = self.winfo_y() + (self.winfo_height() // 2) - (150 // 2)
-        dialog.geometry(f"350x150+{x}+{y}")
+        y = self.winfo_y() + (self.winfo_height() // 2) - (130 // 2)
+        dialog.geometry(f"350x130+{x}+{y}")
 
-        ctk.CTkLabel(dialog, text="Wpisz tekst widoczny zamiast adresu URL:", font=("Arial", 12)).pack(pady=(15, 5))
+        ctk.CTkLabel(dialog, text="Wpisz tekst widoczny zamiast adresu URL:", font=("Arial", 11)).pack(pady=(12, 4))
         
-        entry_alias = ctk.CTkEntry(dialog, textvariable=self.links[index]["label_var"], width=300)
-        entry_alias.pack(pady=5)
+        entry_alias = ctk.CTkEntry(dialog, textvariable=self.links[index]["label_var"], width=300, height=26, font=("Arial", 11), corner_radius=8)
+        entry_alias.pack(pady=4)
         entry_alias.focus_set()
 
         def save_and_close():
             self.update_preview()
             dialog.destroy()
 
-        ctk.CTkButton(dialog, text="Zatwierdź", width=100, command=save_and_close).pack(pady=10)
+        ctk.CTkButton(dialog, text="Zatwierdź", width=100, height=28, font=("Arial", 11), corner_radius=8, command=save_and_close).pack(pady=8)
 
     def add_link_field(self):
         if len(self.links) >= 5:
@@ -533,14 +551,16 @@ class AboutGeneratorApp(ctk.CTk):
         preview_h = max(h, 200)
 
         self.inner_preview = ctk.CTkFrame(self.preview_container, width=preview_w, height=preview_h, 
-                                     fg_color=self.bg_color, border_width=2, border_color="#3a3a3a")
+                                     fg_color=self.bg_color, corner_radius=8, border_width=2, border_color="#3a3a3a")
         self.inner_preview.place(relx=0.5, rely=0.5, anchor="center")
         self.inner_preview.pack_propagate(False)
 
         title_bar = ctk.CTkFrame(self.inner_preview, fg_color="#1e1e1e", height=28, corner_radius=0)
         title_bar.pack(fill="x", side="top")
         title_bar.pack_propagate(False)
-        ctk.CTkLabel(title_bar, text="O programie", font=("Arial", 11), text_color="#ccc").pack(side="left", padx=10)
+        ctk.CTkLabel(title_bar, text="ⓘ  O programie", font=("Arial", 11), text_color="#ccc").pack(side="left", padx=10)
+        for i in range(3):
+            ctk.CTkLabel(title_bar, text="●", font=("Arial", 8), text_color=["#ef4444", "#f59e0b", "#22c55e"][i]).pack(side="right", padx=3)
 
         if self.logo_path and os.path.exists(self.logo_path):
             try:
@@ -568,7 +588,7 @@ class AboutGeneratorApp(ctk.CTk):
                      font=("Arial", self.font_sizes["author"], "italic"), 
                      text_color=self.font_colors["author"]).pack()
         
-        ctk.CTkButton(self.inner_preview, text="Zamknij", fg_color=self.btn_close_bg, 
+        ctk.CTkButton(self.inner_preview, text="Zamknij", fg_color=self.btn_close_bg, corner_radius=8, 
                       text_color=self.btn_close_fg, state="disabled").pack(pady=15, side="bottom")
 
         # Rysowanie odnośników na podglądzie (z uwzględnieniem etykiet zastępczych)

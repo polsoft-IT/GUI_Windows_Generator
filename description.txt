@@ -1,0 +1,2 @@
+GUI Windows Generator is a visual design tool for creating modern "Window gui" dialog windows for CustomTkinter apps. It features a live preview, drag-to-resize, dynamic links, logo support, font/color customization, 15+ built-in themes (Dark, Cyberpunk, macOS, Ubuntu, Retro), and one-click Python code export.
+

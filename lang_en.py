@@ -1,5 +1,5 @@
 # lang_en.py
-# External language plugin for About Window Generator v24
+# External language plugin for GUI Windows Generator v24
 
 TRANSLATIONS = {
     # Menu Bar
@@ -67,8 +67,8 @@ TRANSLATIONS = {
     "Nie zapisano pliku: {}": "File not saved: {}",
 
     # About Generator Dialog
-    "O programie - Generator": "About - Generator",
-    "Generator Okna About": "About Window Generator",
+    "O programie - Generator": "GUI Windows Generator - About",
+    "Generator Okna GUI": "GUI Windows Generator",
     "Wersja v24.0.0": "Version v24.0.0",
     "Zaawansowane narzędzie do wizualnego projektowania, testowania w czasie rzeczywistym oraz generowania czystych, nowoczesńych okien informacyjnych dla biblioteki CustomTkinter.": 
     "An advanced tool for visual design, real-time testing, and generating clean, modern information windows for the CustomTkinter library.",
@@ -84,3 +84,5 @@ TRANSLATIONS = {
     "A short description of your brilliant application. Resize the window with your mouse to see how the text perfectly wraps and fits the edges in the generated file.",
     "Odwiedź GitHub": "Visit GitHub"
 }
+
+
